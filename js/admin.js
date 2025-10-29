@@ -2,32 +2,60 @@ import { db } from './firebase-config.js';
 import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 import { checkAuth, logout } from './auth.js';
 
-if (!checkAuth()) {
+console.log('admin.js cargado correctamente');
+
+// Verificar autenticación
+const isAuth = checkAuth();
+console.log('¿Usuario autenticado?', isAuth);
+
+if (!isAuth) {
+    console.log('Usuario no autenticado, redirigiendo...');
     throw new Error('No autorizado');
 }
 
 let currentEditId = null;
 let products = [];
 
-document.getElementById('logoutBtn').addEventListener('click', logout);
+console.log('Configurando event listeners...');
 
+// Logout
+const logoutBtn = document.getElementById('logoutBtn');
+console.log('Botón logout encontrado:', logoutBtn);
+
+if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+        console.log('Cerrando sesión...');
+        logout();
+    });
+}
+
+// Navegación entre secciones
 const navItems = document.querySelectorAll('.nav-item');
 const sections = document.querySelectorAll('.admin-section');
+
+console.log('Nav items encontrados:', navItems.length);
+console.log('Secciones encontradas:', sections.length);
 
 navItems.forEach(item => {
     item.addEventListener('click', (e) => {
         e.preventDefault();
         const targetSection = item.dataset.section;
+        console.log('Navegando a sección:', targetSection);
         
         navItems.forEach(nav => nav.classList.remove('active'));
         sections.forEach(section => section.classList.remove('active'));
         
         item.classList.add('active');
-        document.getElementById(`${targetSection}Section`).classList.add('active');
+        const targetElement = document.getElementById(`${targetSection}Section`);
+        if (targetElement) {
+            targetElement.classList.add('active');
+        }
     });
 });
 
+// Cargar productos
 async function loadProducts() {
+    console.log('Cargando productos...');
     try {
         const productsRef = collection(db, 'products');
         const q = query(productsRef, orderBy('name'));
@@ -41,17 +69,19 @@ async function loadProducts() {
             });
         });
         
+        console.log('Productos cargados:', products.length);
         displayProductsTable(products);
     } catch (error) {
         console.error('Error al cargar productos:', error);
         document.getElementById('productsTableBody').innerHTML = `
-            <tr><td colspan="5" class="loading-row">Error al cargar productos</td></tr>
+            <tr><td colspan="5" class="loading-row">Error al cargar productos: ${error.message}</td></tr>
         `;
     }
 }
 
 function displayProductsTable(productsArray) {
     const tbody = document.getElementById('productsTableBody');
+    console.log('Mostrando productos en tabla:', productsArray.length);
     
     if (productsArray.length === 0) {
         tbody.innerHTML = `
@@ -91,12 +121,17 @@ function getCategoryName(category) {
 }
 
 function attachActionListeners() {
+    console.log('Adjuntando listeners a botones de productos...');
     const editButtons = document.querySelectorAll('.btn-edit');
     const deleteButtons = document.querySelectorAll('.btn-delete');
+    
+    console.log('Botones editar:', editButtons.length);
+    console.log('Botones eliminar:', deleteButtons.length);
     
     editButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             const productId = e.target.dataset.id;
+            console.log('Editando producto:', productId);
             editProduct(productId);
         });
     });
@@ -104,6 +139,7 @@ function attachActionListeners() {
     deleteButtons.forEach(button => {
         button.addEventListener('click', (e) => {
             const productId = e.target.dataset.id;
+            console.log('Eliminando producto:', productId);
             confirmDelete(productId);
         });
     });
@@ -144,6 +180,8 @@ function confirmDelete(productId) {
 document.getElementById('confirmDelete').addEventListener('click', async () => {
     if (!currentEditId) return;
     
+    console.log('Confirmando eliminación de:', currentEditId);
+    
     try {
         await deleteDoc(doc(db, 'products', currentEditId));
         
@@ -155,7 +193,7 @@ document.getElementById('confirmDelete').addEventListener('click', async () => {
         showNotification('Producto eliminado exitosamente', 'success');
     } catch (error) {
         console.error('Error al eliminar producto:', error);
-        showNotification('Error al eliminar producto', 'error');
+        showNotification('Error al eliminar producto: ' + error.message, 'error');
     }
 });
 
@@ -231,6 +269,7 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
 });
 
 function showNotification(message, type) {
+    console.log('Mostrando notificación:', message, type);
     const notification = document.createElement('div');
     notification.style.cssText = `
         position: fixed;
@@ -273,4 +312,5 @@ function showNotification(message, type) {
     }, 3000);
 }
 
+console.log('Iniciando carga de productos...');
 loadProducts();
