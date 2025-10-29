@@ -46,9 +46,17 @@ navItems.forEach(item => {
         sections.forEach(section => section.classList.remove('active'));
         
         item.classList.add('active');
-        const targetElement = document.getElementById(`${targetSection}Section`);
+        
+        const sectionId = targetSection.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
+        const targetElement = document.getElementById(`${sectionId}Section`);
+        
+        console.log('Buscando elemento:', `${sectionId}Section`);
+        console.log('Elemento encontrado:', targetElement);
+        
         if (targetElement) {
             targetElement.classList.add('active');
+        } else {
+            console.error('No se encontró la sección:', `${sectionId}Section`);
         }
     });
 });
