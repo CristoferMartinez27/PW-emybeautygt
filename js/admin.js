@@ -47,22 +47,30 @@ navItems.forEach(item => {
         
         item.classList.add('active');
         
-        // Mapeo directo de secciones
+        // Buscar la sección que corresponde
         let targetElement = null;
+        
+        // Listar todas las secciones disponibles
+        const allSections = document.querySelectorAll('.admin-section');
+        console.log('Secciones disponibles en el DOM:');
+        allSections.forEach(sec => {
+            console.log('  -', sec.id);
+        });
+        
+        // Buscar por índice si es necesario
         if (targetSection === 'products') {
-            targetElement = document.getElementById('productsSection');
+            targetElement = allSections[0]; // Primera sección
         } else if (targetSection === 'add-product') {
-            targetElement = document.getElementById('addProductSection');
+            targetElement = allSections[1]; // Segunda sección
         }
         
-        console.log('Buscando sección:', targetSection);
         console.log('Elemento encontrado:', targetElement);
         
         if (targetElement) {
             targetElement.classList.add('active');
             console.log('Sección activada correctamente');
         } else {
-            console.error('No se encontró la sección:', targetSection);
+            console.error('No se encontró la sección');
         }
     });
 });
