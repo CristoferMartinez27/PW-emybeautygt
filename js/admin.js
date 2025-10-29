@@ -4,24 +4,32 @@ import { checkAuth, logout } from './auth.js';
 
 console.log('admin.js cargado correctamente');
 
-const isAuth = checkAuth();
-console.log('Usuario autenticado:', isAuth);
+// Verificar autenticación de forma asíncrona
+(async () => {
+    const isAuth = await checkAuth();
+    console.log('Usuario autenticado:', isAuth);
+    
+    if (!isAuth) {
+        console.log('Redirigiendo a login...');
+        window.location.href = 'login.html';
+        return;
+    }
+    
+    // Resto del código de admin.js...
+    initializeAdmin();
+})();
 
-if (!isAuth) {
-    console.log('Redirigiendo a login...');
-    throw new Error('No autorizado');
-}
+function initializeAdmin() {
+    let currentEditId = null;
+    let products = [];
 
-let currentEditId = null;
-let products = [];
-
-const logoutBtn = document.getElementById('logoutBtn');
-if (logoutBtn) {
-    logoutBtn.addEventListener('click', () => {
-        console.log('Cerrando sesión...');
-        logout();
-    });
-}
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            console.log('Cerrando sesión...');
+            logout();
+        });
+    }}
 
 const navItems = document.querySelectorAll('.nav-item');
 const sections = document.querySelectorAll('.admin-section');
