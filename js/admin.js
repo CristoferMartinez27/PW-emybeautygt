@@ -47,16 +47,22 @@ navItems.forEach(item => {
         
         item.classList.add('active');
         
-        const sectionId = targetSection.replace(/-([a-z])/g, (g) => g[1].toUpperCase());
-        const targetElement = document.getElementById(`${sectionId}Section`);
+        // Mapeo directo de secciones
+        let targetElement = null;
+        if (targetSection === 'products') {
+            targetElement = document.getElementById('productsSection');
+        } else if (targetSection === 'add-product') {
+            targetElement = document.getElementById('addProductSection');
+        }
         
-        console.log('Buscando elemento:', `${sectionId}Section`);
+        console.log('Buscando sección:', targetSection);
         console.log('Elemento encontrado:', targetElement);
         
         if (targetElement) {
             targetElement.classList.add('active');
+            console.log('Sección activada correctamente');
         } else {
-            console.error('No se encontró la sección:', `${sectionId}Section`);
+            console.error('No se encontró la sección:', targetSection);
         }
     });
 });
