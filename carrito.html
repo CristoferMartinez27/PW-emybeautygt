@@ -50,6 +50,27 @@
                         <span id="subtotal">Q 0.00</span>
                     </div>
 
+                    <div id="shippingSelection" class="shipping-selection">
+                        <h4>Método de Envío</h4>
+                        <div class="shipping-options-summary">
+                            <label class="radio-option">
+                                <input type="radio" name="shippingMethodSummary" value="contraentrega" checked>
+                                <div class="radio-content">
+                                    <strong>Contraentrega - Cargo Express</strong>
+                                    <p>Q30.00 + 4% del total</p>
+                                </div>
+                            </label>
+                            
+                            <label class="radio-option">
+                                <input type="radio" name="shippingMethodSummary" value="deposito">
+                                <div class="radio-content">
+                                    <strong>Previo Depósito/Transferencia - Forza</strong>
+                                    <p>Q25.00</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
                     <div class="summary-row">
                         <span>Envío:</span>
                         <span id="shipping">Q 0.00</span>
@@ -66,13 +87,18 @@
                     </div>
 
                     <button class="btn-primary btn-block" id="proceedCheckout">
-                        Proceder al Checkout
+                        Continuar con Datos de Entrega
                     </button>
                 </div>
             </div>
 
             <div id="checkoutSection" class="checkout-section" style="display: none;">
                 <h3>Datos de Entrega</h3>
+                
+                <div class="order-summary-mini">
+                    <p><strong>Total a pagar:</strong> <span id="totalCheckout">Q 0.00</span></p>
+                    <p><strong>Método de envío:</strong> <span id="shippingMethodText"></span></p>
+                </div>
                 
                 <form id="checkoutForm" class="checkout-form">
                     <div class="form-group">
@@ -82,7 +108,7 @@
 
                     <div class="form-group">
                         <label for="customerPhone">Número de WhatsApp</label>
-                        <input type="tel" id="customerPhone" name="customerPhone" >
+                        <input type="tel" id="customerPhone" name="customerPhone" required placeholder="Ej: 51190862">
                     </div>
 
                     <div class="form-group">
@@ -119,29 +145,9 @@
                         </select>
                     </div>
 
-                    <div class="form-group">
-                        <label for="shippingMethod">Método de Envío</label>
-                        <div class="shipping-options">
-                            <label class="radio-option">
-                                <input type="radio" name="shippingMethod" value="contraentrega" checked>
-                                <div class="radio-content">
-                                    <strong>Contraentrega - Cargo Express</strong>
-                                    <p>Q30.00 + 4% del total</p>
-                                </div>
-                            </label>
-                            
-                            <label class="radio-option">
-                                <input type="radio" name="shippingMethod" value="deposito">
-                                <div class="radio-content">
-                                    <strong>Previo Depósito/Transferencia - Forza</strong>
-                                    <p>Q25.00</p>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-
                     <div class="form-actions">
-                        <button type="submit" class="btn-primary btn-block">
+                        <button type="button" class="btn-secondary" id="backToCart">Volver al Carrito</button>
+                        <button type="submit" class="btn-primary">
                             Confirmar Pedido y Enviar a WhatsApp
                         </button>
                     </div>
@@ -171,7 +177,7 @@
                                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                             </svg>
                         </a>
-                        <a href="https://wa.me/50251190862" target="_blank" rel="noopener" class="social-link">
+                        <a href="https://wa.me/50251190863" target="_blank" rel="noopener" class="social-link">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
                             </svg>
@@ -181,7 +187,7 @@
 
                 <div class="footer-section">
                     <h4>Contacto</h4>
-                    <p>WhatsApp: +502 5119-0862</p>
+                    <p>WhatsApp: +502 5119-0863</p>
                     <p>Guatemala</p>
                 </div>
             </div>
@@ -199,6 +205,7 @@
         let cartItems = [];
         let shippingCost = 30;
         let extraCharge = 0;
+        let selectedShippingMethod = 'contraentrega';
 
         function renderCart() {
             cartItems = getCartItems();
@@ -211,8 +218,11 @@
                         <a href="index.html" class="btn-primary">Ir a Comprar</a>
                     </div>
                 `;
+                document.querySelector('.cart-summary').style.display = 'none';
                 return;
             }
+
+            document.querySelector('.cart-summary').style.display = 'block';
 
             cartContainer.innerHTML = cartItems.map(item => `
                 <div class="cart-item" data-id="${item.id}">
@@ -244,9 +254,7 @@
         function updateTotals() {
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             
-            const shippingMethod = document.querySelector('input[name="shippingMethod"]:checked')?.value || 'contraentrega';
-            
-            if (shippingMethod === 'contraentrega') {
+            if (selectedShippingMethod === 'contraentrega') {
                 shippingCost = 30;
                 extraCharge = subtotal * 0.04;
                 document.getElementById('extraChargeRow').style.display = 'flex';
@@ -282,17 +290,40 @@
             }
         });
 
+        document.querySelectorAll('input[name="shippingMethodSummary"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                selectedShippingMethod = e.target.value;
+                updateTotals();
+            });
+        });
+
         document.getElementById('proceedCheckout').addEventListener('click', () => {
             if (cartItems.length === 0) {
                 alert('Tu carrito está vacío');
                 return;
             }
+
+            // Ocultar carrito y mostrar formulario
+            document.querySelector('.cart-layout').style.display = 'none';
             document.getElementById('checkoutSection').style.display = 'block';
+
+            // Actualizar resumen en el checkout
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + shippingCost + extraCharge;
+            document.getElementById('totalCheckout').textContent = `Q ${total.toFixed(2)}`;
+
+            const shippingMethodText = selectedShippingMethod === 'contraentrega' 
+                ? 'Contraentrega (Cargo Express) - Q30.00 + 4%' 
+                : 'Previo Depósito/Transferencia (Forza) - Q25.00';
+            document.getElementById('shippingMethodText').textContent = shippingMethodText;
+
             document.getElementById('checkoutSection').scrollIntoView({ behavior: 'smooth' });
         });
 
-        document.querySelectorAll('input[name="shippingMethod"]').forEach(radio => {
-            radio.addEventListener('change', updateTotals);
+        document.getElementById('backToCart').addEventListener('click', () => {
+            document.querySelector('.cart-layout').style.display = 'grid';
+            document.getElementById('checkoutSection').style.display = 'none';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         document.getElementById('checkoutForm').addEventListener('submit', (e) => {
@@ -302,7 +333,6 @@
             const phone = document.getElementById('customerPhone').value;
             const address = document.getElementById('customerAddress').value;
             const department = document.getElementById('customerDepartment').value;
-            const shippingMethod = document.querySelector('input[name="shippingMethod"]:checked').value;
 
             const now = new Date();
             const orderNumber = `EM-${now.getFullYear().toString().slice(-2)}-${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
@@ -310,7 +340,7 @@
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const total = subtotal + shippingCost + extraCharge;
 
-            const shippingMethodText = shippingMethod === 'contraentrega' 
+            const shippingMethodText = selectedShippingMethod === 'contraentrega' 
                 ? 'Contraentrega (Cargo Express)' 
                 : 'Previo Depósito/Transferencia (Forza)';
 

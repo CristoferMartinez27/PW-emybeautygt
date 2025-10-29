@@ -179,6 +179,60 @@
     margin-top: 1.5rem;
 }
 
+.shipping-selection {
+    margin: 1.5rem 0;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--color3);
+}
+
+.shipping-selection h4 {
+    color: var(--color1);
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.shipping-options-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.order-summary-mini {
+    background-color: var(--color3);
+    padding: 1.25rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+}
+
+.order-summary-mini p {
+    margin: 0.5rem 0;
+    color: var(--text-dark);
+    font-size: 1rem;
+}
+
+.order-summary-mini strong {
+    color: var(--color1);
+}
+
+.order-summary-mini span {
+    color: var(--color5);
+    font-weight: 600;
+}
+
+.form-actions {
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.form-actions .btn-secondary {
+    flex: 0 0 auto;
+}
+
+.form-actions .btn-primary {
+    flex: 1;
+}
+
 .checkout-section {
     background-color: var(--white);
     padding: 2rem;
