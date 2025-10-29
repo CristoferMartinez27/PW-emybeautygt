@@ -1,0 +1,370 @@
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--color2);
+}
+
+.admin-sidebar {
+    width: 260px;
+    background-color: var(--color1);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 2rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h2 {
+    color: var(--color5);
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.sidebar-header p {
+    color: var(--color3);
+    font-size: 0.875rem;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 1rem 0;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    color: var(--white);
+    text-decoration: none;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left-color: var(--color5);
+}
+
+.nav-item.active {
+    background-color: rgba(247, 162, 158, 0.1);
+    border-left-color: var(--color5);
+    color: var(--color5);
+}
+
+.sidebar-footer {
+    padding: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.btn-logout {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-logout:hover {
+    background-color: var(--color5);
+}
+
+.admin-content {
+    flex: 1;
+    margin-left: 260px;
+    padding: 2rem;
+}
+
+.admin-section {
+    display: none;
+}
+
+.admin-section.active {
+    display: block;
+}
+
+.section-header {
+    margin-bottom: 2rem;
+}
+
+.section-header h1 {
+    color: var(--color1);
+    font-size: 2rem;
+}
+
+.products-table-container {
+    background-color: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow);
+    overflow: hidden;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.products-table thead {
+    background-color: var(--color1);
+    color: var(--white);
+}
+
+.products-table th {
+    padding: 1.25rem;
+    text-align: left;
+    font-weight: 600;
+}
+
+.products-table td {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--color3);
+}
+
+.products-table tbody tr:hover {
+    background-color: var(--color3);
+}
+
+.products-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.product-img-cell {
+    width: 80px;
+}
+
+.product-img-cell img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.product-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-edit,
+.btn-delete {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-edit {
+    background-color: var(--color4);
+    color: var(--white);
+}
+
+.btn-edit:hover {
+    background-color: var(--color5);
+}
+
+.btn-delete {
+    background-color: #dc3545;
+    color: var(--white);
+}
+
+.btn-delete:hover {
+    background-color: #c82333;
+}
+
+.loading-row {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-light);
+}
+
+.product-form {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px var(--shadow);
+    max-width: 800px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    color: var(--text-dark);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.875rem;
+    border: 2px solid var(--color3);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--color5);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--text-light);
+    font-size: 0.875rem;
+}
+
+.form-group textarea {
+    resize: vertical;
+}
+
+.image-preview {
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.image-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-secondary {
+    background-color: var(--text-light);
+    color: var(--white);
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-dark);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--white);
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 400px;
+    text-align: center;
+}
+
+.modal-content h3 {
+    color: var(--color1);
+    margin-bottom: 1rem;
+}
+
+.modal-content p {
+    color: var(--text-light);
+    margin-bottom: 2rem;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: var(--white);
+    border: none;
+    padding: 0.875rem 2rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        position: relative;
+        height: auto;
+    }
+
+    .admin-content {
+        margin-left: 0;
+        padding: 1rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .products-table {
+        font-size: 0.875rem;
+    }
+
+    .products-table th,
+    .products-table td {
+        padding: 0.75rem;
+    }
+
+    .product-actions {
+        flex-direction: column;
+    }
+}

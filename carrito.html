@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - EmyBeautyGT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/carrito.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">
+                    <h1>EmyBeautyGT</h1>
+                    <p class="tagline">Italia Deluxe Guatemala</p>
+                </div>
+                
+                <a href="index.html" class="btn-back">Seguir Comprando</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="cart-main">
+        <div class="container">
+            <h2>Tu Carrito de Compras</h2>
+
+            <div class="cart-layout">
+                <div class="cart-items" id="cartItems">
+                    <div class="loading">Cargando carrito...</div>
+                </div>
+
+                <div class="cart-summary">
+                    <h3>Resumen del Pedido</h3>
+                    
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">Q 0.00</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Envío:</span>
+                        <span id="shipping">Q 0.00</span>
+                    </div>
+
+                    <div class="summary-row" id="extraChargeRow" style="display: none;">
+                        <span>4% Contraentrega:</span>
+                        <span id="extraCharge">Q 0.00</span>
+                    </div>
+
+                    <div class="summary-row total">
+                        <span>Total:</span>
+                        <span id="total">Q 0.00</span>
+                    </div>
+
+                    <button class="btn-primary btn-block" id="proceedCheckout">
+                        Proceder al Checkout
+                    </button>
+                </div>
+            </div>
+
+            <div id="checkoutSection" class="checkout-section" style="display: none;">
+                <h3>Datos de Entrega</h3>
+                
+                <form id="checkoutForm" class="checkout-form">
+                    <div class="form-group">
+                        <label for="customerName">Nombre Completo</label>
+                        <input type="text" id="customerName" name="customerName" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerPhone">Número de WhatsApp</label>
+                        <input type="tel" id="customerPhone" name="customerPhone" required placeholder="51190862">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerAddress">Dirección de Entrega</label>
+                        <textarea id="customerAddress" name="customerAddress" rows="3" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerDepartment">Departamento</label>
+                        <select id="customerDepartment" name="customerDepartment" required>
+                            <option value="">Seleccione un departamento</option>
+                            <option value="Guatemala">Guatemala</option>
+                            <option value="Alta Verapaz">Alta Verapaz</option>
+                            <option value="Baja Verapaz">Baja Verapaz</option>
+                            <option value="Chimaltenango">Chimaltenango</option>
+                            <option value="Chiquimula">Chiquimula</option>
+                            <option value="El Progreso">El Progreso</option>
+                            <option value="Escuintla">Escuintla</option>
+                            <option value="Huehuetenango">Huehuetenango</option>
+                            <option value="Izabal">Izabal</option>
+                            <option value="Jalapa">Jalapa</option>
+                            <option value="Jutiapa">Jutiapa</option>
+                            <option value="Petén">Petén</option>
+                            <option value="Quetzaltenango">Quetzaltenango</option>
+                            <option value="Quiché">Quiché</option>
+                            <option value="Retalhuleu">Retalhuleu</option>
+                            <option value="Sacatepéquez">Sacatepéquez</option>
+                            <option value="San Marcos">San Marcos</option>
+                            <option value="Santa Rosa">Santa Rosa</option>
+                            <option value="Sololá">Sololá</option>
+                            <option value="Suchitepéquez">Suchitepéquez</option>
+                            <option value="Totonicapán">Totonicapán</option>
+                            <option value="Zacapa">Zacapa</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="shippingMethod">Método de Envío</label>
+                        <div class="shipping-options">
+                            <label class="radio-option">
+                                <input type="radio" name="shippingMethod" value="contraentrega" checked>
+                                <div class="radio-content">
+                                    <strong>Contraentrega - Cargo Express</strong>
+                                    <p>Q30.00 + 4% del total</p>
+                                </div>
+                            </label>
+                            
+                            <label class="radio-option">
+                                <input type="radio" name="shippingMethod" value="deposito">
+                                <div class="radio-content">
+                                    <strong>Previo Depósito/Transferencia - Forza</strong>
+                                    <p>Q25.00</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary btn-block">
+                            Confirmar Pedido y Enviar a WhatsApp
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>EmyBeautyGT</h4>
+                    <p>Cosméticos Italia Deluxe de calidad para Guatemala</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Síguenos</h4>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/emybeautygt/" target="_blank" rel="noopener" class="social-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                        </a>
+                        <a href="https://www.facebook.com/profile.php?id=61556014524624" target="_blank" rel="noopener" class="social-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                            </svg>
+                        </a>
+                        <a href="https://wa.me/50251190863" target="_blank" rel="noopener" class="social-link">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contacto</h4>
+                    <p>WhatsApp: +502 5119-0863</p>
+                    <p>Guatemala</p>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 EmyBeautyGT. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module">
+        import { getCartItems, removeFromCart, updateQuantity, clearCart } from './js/cart.js';
+
+        let cartItems = [];
+        let shippingCost = 30;
+        let extraCharge = 0;
+
+        function renderCart() {
+            cartItems = getCartItems();
+            const cartContainer = document.getElementById('cartItems');
+
+            if (cartItems.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <p>Tu carrito está vacío</p>
+                        <a href="index.html" class="btn-primary">Ir a Comprar</a>
+                    </div>
+                `;
+                return;
+            }
+
+            cartContainer.innerHTML = cartItems.map(item => `
+                <div class="cart-item" data-id="${item.id}">
+                    <img src="${item.image}" alt="${item.name}">
+                    <div class="item-details">
+                        <h4>${item.name}</h4>
+                        <p class="item-price">Q ${item.price.toFixed(2)}</p>
+                    </div>
+                    <div class="item-quantity">
+                        <button class="qty-btn minus" data-id="${item.id}">-</button>
+                        <span class="qty">${item.quantity}</span>
+                        <button class="qty-btn plus" data-id="${item.id}">+</button>
+                    </div>
+                    <div class="item-total">
+                        Q ${(item.price * item.quantity).toFixed(2)}
+                    </div>
+                    <button class="btn-remove" data-id="${item.id}">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                    </button>
+                </div>
+            `).join('');
+
+            updateTotals();
+        }
+
+        function updateTotals() {
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            const shippingMethod = document.querySelector('input[name="shippingMethod"]:checked')?.value || 'contraentrega';
+            
+            if (shippingMethod === 'contraentrega') {
+                shippingCost = 30;
+                extraCharge = subtotal * 0.04;
+                document.getElementById('extraChargeRow').style.display = 'flex';
+            } else {
+                shippingCost = 25;
+                extraCharge = 0;
+                document.getElementById('extraChargeRow').style.display = 'none';
+            }
+
+            const total = subtotal + shippingCost + extraCharge;
+
+            document.getElementById('subtotal').textContent = `Q ${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `Q ${shippingCost.toFixed(2)}`;
+            document.getElementById('extraCharge').textContent = `Q ${extraCharge.toFixed(2)}`;
+            document.getElementById('total').textContent = `Q ${total.toFixed(2)}`;
+        }
+
+        document.getElementById('cartItems').addEventListener('click', (e) => {
+            const target = e.target.closest('button');
+            if (!target) return;
+
+            const id = target.dataset.id;
+
+            if (target.classList.contains('plus')) {
+                updateQuantity(id, 1);
+                renderCart();
+            } else if (target.classList.contains('minus')) {
+                updateQuantity(id, -1);
+                renderCart();
+            } else if (target.classList.contains('btn-remove')) {
+                removeFromCart(id);
+                renderCart();
+            }
+        });
+
+        document.getElementById('proceedCheckout').addEventListener('click', () => {
+            if (cartItems.length === 0) {
+                alert('Tu carrito está vacío');
+                return;
+            }
+            document.getElementById('checkoutSection').style.display = 'block';
+            document.getElementById('checkoutSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        document.querySelectorAll('input[name="shippingMethod"]').forEach(radio => {
+            radio.addEventListener('change', updateTotals);
+        });
+
+        document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('customerName').value;
+            const phone = document.getElementById('customerPhone').value;
+            const address = document.getElementById('customerAddress').value;
+            const department = document.getElementById('customerDepartment').value;
+            const shippingMethod = document.querySelector('input[name="shippingMethod"]:checked').value;
+
+            const now = new Date();
+            const orderNumber = `EM-${now.getFullYear().toString().slice(-2)}-${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const total = subtotal + shippingCost + extraCharge;
+
+            const shippingMethodText = shippingMethod === 'contraentrega' 
+                ? 'Contraentrega (Cargo Express)' 
+                : 'Previo Depósito/Transferencia (Forza)';
+
+            let message = `Hola Emybeautygt\n\nQuiero confirmar mi pedido ${orderNumber}:\n\n`;
+            
+            cartItems.forEach(item => {
+                message += `* ${item.quantity}x ${item.name} - Q ${(item.price * item.quantity).toFixed(2)}\n`;
+            });
+
+            message += `\n--------------------\n`;
+            message += `Subtotal: Q ${subtotal.toFixed(2)}\n`;
+            message += `Envío: Q ${shippingCost.toFixed(2)}\n`;
+            
+            if (extraCharge > 0) {
+                message += `4%: Q ${extraCharge.toFixed(2)}\n`;
+            }
+            
+            message += `Total: Q ${total.toFixed(2)}\n\n`;
+            message += `Nombre: ${name}\n`;
+            message += `WhatsApp: ${phone}\n`;
+            message += `Dirección: ${address}\n`;
+            message += `Departamento: ${department}\n`;
+            message += `Tipo de envío: ${shippingMethodText}`;
+
+            const whatsappUrl = `https://wa.me/50251190863?text=${encodeURIComponent(message)}`;
+            
+            window.open(whatsappUrl, '_blank');
+            
+            clearCart();
+            
+            setTimeout(() => {
+                window.location.href = 'index.html';
+            }, 1000);
+        });
+
+        renderCart();
+    </script>
+</body>
+</html>

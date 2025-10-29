@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - EmyBeautyGT</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <h2>EmyBeautyGT</h2>
+                <p>Panel Admin</p>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="#" class="nav-item active" data-section="products">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <path d="M16 10a4 4 0 0 1-8 0"></path>
+                    </svg>
+                    Productos
+                </a>
+                <a href="#" class="nav-item" data-section="add-product">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Agregar Producto
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="logoutBtn" class="btn-logout">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Cerrar Sesión
+                </button>
+            </div>
+        </aside>
+
+        <main class="admin-content">
+            <section id="productsSection" class="admin-section active">
+                <div class="section-header">
+                    <h1>Gestión de Productos</h1>
+                </div>
+
+                <div class="products-table-container">
+                    <table class="products-table">
+                        <thead>
+                            <tr>
+                                <th>Imagen</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th>Precio</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="5" class="loading-row">Cargando productos...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section id="addProductSection" class="admin-section">
+                <div class="section-header">
+                    <h1 id="formTitle">Agregar Nuevo Producto</h1>
+                </div>
+
+                <form id="productForm" class="product-form">
+                    <input type="hidden" id="productId" name="productId">
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productName">Nombre del Producto</label>
+                            <input type="text" id="productName" name="productName" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productCategory">Categoría</label>
+                            <select id="productCategory" name="productCategory" required>
+                                <option value="">Seleccione una categoría</option>
+                                <option value="labiales">Labiales</option>
+                                <option value="bases">Bases</option>
+                                <option value="polvos">Polvos</option>
+                                <option value="delineadores">Delineadores</option>
+                                <option value="sombras">Sombras</option>
+                                <option value="shampoos">Shampoos/Acondicionadores</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="productPrice">Precio (Q)</label>
+                            <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="productImage">URL de la Imagen</label>
+                            <input type="url" id="productImage" name="productImage" required>
+                            <small>Puede usar servicios como Imgur o subir a Firebase Storage</small>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="productDescription">Descripción</label>
+                        <textarea id="productDescription" name="productDescription" rows="4" required></textarea>
+                    </div>
+
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <img id="previewImg" src="" alt="Vista previa">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="submitBtn">Guardar Producto</button>
+                        <button type="button" class="btn-secondary" id="cancelBtn">Cancelar</button>
+                    </div>
+                </form>
+            </section>
+        </main>
+    </div>
+
+    <div id="deleteModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirmar Eliminación</h3>
+            <p>¿Está seguro que desea eliminar este producto?</p>
+            <div class="modal-actions">
+                <button class="btn-danger" id="confirmDelete">Eliminar</button>
+                <button class="btn-secondary" id="cancelDelete">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/admin.js"></script>
+</body>
+</html>
