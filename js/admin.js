@@ -197,14 +197,19 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
         description: document.getElementById('productDescription').value.trim()
     };
     
+    console.log('Intentando guardar producto:', productData);
+    
     try {
         const productId = document.getElementById('productId').value;
         
         if (productId) {
+            console.log('Actualizando producto con ID:', productId);
             await updateDoc(doc(db, 'products', productId), productData);
             showNotification('Producto actualizado exitosamente', 'success');
         } else {
-            await addDoc(collection(db, 'products'), productData);
+            console.log('Creando nuevo producto...');
+            const docRef = await addDoc(collection(db, 'products'), productData);
+            console.log('Producto creado con ID:', docRef.id);
             showNotification('Producto agregado exitosamente', 'success');
         }
         
@@ -218,8 +223,10 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
         document.getElementById('productsSection').classList.add('active');
         
     } catch (error) {
-        console.error('Error al guardar producto:', error);
-        showNotification('Error al guardar producto', 'error');
+        console.error('Error detallado al guardar producto:', error);
+        console.error('Código de error:', error.code);
+        console.error('Mensaje:', error.message);
+        showNotification('Error: ' + error.message, 'error');
     }
 });
 
