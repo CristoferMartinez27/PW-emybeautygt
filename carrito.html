@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EmyBeautyGT - Cosméticos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>EmyBeautyGT - Carrito</title>
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/carrito.css">
 </head>
 <body>
     <header>
@@ -302,11 +306,9 @@
                 return;
             }
 
-            // Ocultar carrito y mostrar formulario
             document.querySelector('.cart-layout').style.display = 'none';
             document.getElementById('checkoutSection').style.display = 'block';
 
-            // Actualizar resumen en el checkout
             const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const total = subtotal + shippingCost + extraCharge;
             document.getElementById('totalCheckout').textContent = `Q ${total.toFixed(2)}`;
@@ -379,7 +381,6 @@
     </script>
 
     <script>
-        // Menu toggle
         const menuToggle = document.getElementById('menuToggle');
         const navMenu = document.getElementById('navMenu');
         
