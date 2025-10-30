@@ -77,23 +77,26 @@
 }
 
 .qty-btn {
-    background-color: var(--color5);
+    background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
     color: var(--white);
     border: none;
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
     line-height: 1;
+    box-shadow: 0 2px 8px rgba(255, 64, 129, 0.3);
 }
 
 .qty-btn:hover {
-    background-color: var(--color4);
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(255, 64, 129, 0.5);
 }
 
 .qty {
@@ -196,6 +199,17 @@
 
 #proceedCheckout {
     margin-top: 1.5rem;
+    background: linear-gradient(135deg, #ff4081 0%, #e91e63 100%);
+    box-shadow: 0 4px 15px rgba(255, 64, 129, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 700;
+}
+
+#proceedCheckout:hover {
+    background: linear-gradient(135deg, #e91e63 0%, #c2185b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 64, 129, 0.6);
 }
 
 /* MÉTODO DE ENVÍO */
@@ -373,44 +387,84 @@
 
 @media (max-width: 640px) {
     .cart-main {
-        padding: 2rem 0;
+        padding: 1.5rem 0;
     }
 
     .cart-main h2 {
         font-size: 1.5rem;
+        padding: 0 1rem;
+    }
+
+    .cart-layout {
+        gap: 1.5rem;
     }
 
     .cart-item {
-        flex-wrap: wrap;
-        padding: 1rem;
+        flex-direction: column;
+        padding: 1.5rem;
         gap: 1rem;
+        text-align: center;
+        align-items: center;
     }
 
     .cart-item img {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
     }
 
     .item-details {
-        flex: 1 1 calc(100% - 100px);
+        width: 100%;
+        text-align: center;
+    }
+
+    .item-details h4 {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .item-price {
+        font-size: 0.95rem;
     }
 
     .item-quantity {
-        order: 3;
+        margin: 0.5rem auto;
+        padding: 0.6rem 1rem;
     }
 
     .item-total {
-        order: 4;
-        flex: 1;
-        text-align: left;
+        width: 100%;
+        text-align: center;
+        font-size: 1.3rem;
+        margin: 0.5rem 0;
     }
 
     .btn-remove {
-        order: 5;
+        margin: 0.5rem auto 0;
     }
 
     .cart-summary {
         padding: 1.5rem;
+    }
+
+    .summary-row {
+        font-size: 1rem;
+    }
+
+    .shipping-selection h4 {
+        font-size: 1rem;
+    }
+
+    .radio-option {
+        padding: 0.875rem;
+    }
+
+    .radio-content strong {
+        font-size: 0.875rem;
+    }
+
+    .radio-content p {
+        font-size: 0.8rem;
     }
 
     .form-actions {

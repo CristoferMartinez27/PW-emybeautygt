@@ -176,27 +176,48 @@
 
         // Cargar productos
         async function loadProducts() {
-            try {
-                const productsRef = collection(db, 'products');
-                const q = query(productsRef, orderBy('name'));
-                const querySnapshot = await getDocs(q);
-                
-                allProducts = [];
-                querySnapshot.forEach((doc) => {
-                    allProducts.push({
-                        id: doc.id,
-                        ...doc.data()
-                    });
-                });
-                
-                displayProducts(allProducts);
-            } catch (error) {
-                console.error('Error al cargar productos:', error);
-                document.getElementById('productsGrid').innerHTML = `
-                    <div class="loading">Error al cargar productos. Verifica la consola para más detalles.</div>
-                `;
-            }
+    try {
+        const productsRef = collection(db, 'products');
+        
+        // Intentar primero con order, si falla cargar sin ordenar
+        let querySnapshot;
+        try {
+            const q = query(productsRef, orderBy('order', 'asc'));
+            querySnapshot = await getDocs(q);
+        } catch (orderError) {
+            console.log('Cargando productos sin campo order...');
+            querySnapshot = await getDocs(productsRef);
         }
+        
+        allProducts = [];
+        querySnapshot.forEach((doc) => {
+            allProducts.push({
+                id: doc.id,
+                ...doc.data()
+            });
+        });
+        
+        // Ordenar manualmente
+        allProducts.sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) {
+                return a.order - b.order;
+            } else if (a.order !== undefined) {
+                return -1;
+            } else if (b.order !== undefined) {
+                return 1;
+            } else {
+                return a.name.localeCompare(b.name);
+            }
+        });
+        
+        displayProducts(allProducts);
+    } catch (error) {
+        console.error('Error al cargar productos:', error);
+        document.getElementById('productsGrid').innerHTML = `
+            <div class="loading">Error al cargar productos. Verifica la consola para más detalles.</div>
+        `;
+    }
+}
 
         function displayProducts(products) {
             const grid = document.getElementById('productsGrid');

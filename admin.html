@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>EmyBeautyGT - Cosméticos Italia Deluxe</title>
+    <title>EmyBeautyGT - Panel Admin</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/admin.css">
 </head>
@@ -58,6 +58,7 @@
                     <table class="products-table">
                         <thead>
                             <tr>
+                                <th>Orden</th>
                                 <th>Imagen</th>
                                 <th>Nombre</th>
                                 <th>Categoría</th>
@@ -67,7 +68,7 @@
                         </thead>
                         <tbody id="productsTableBody">
                             <tr>
-                                <td colspan="5" class="loading-row">Cargando productos...</td>
+                                <td colspan="6" class="loading-row">Cargando productos...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -89,6 +90,15 @@
                         </div>
 
                         <div class="form-group">
+                            <label for="productOrder">Orden de Aparición</label>
+                            <input type="number" id="productOrder" name="productOrder" min="1" required 
+                                   placeholder="1 = primero, 2 = segundo, etc.">
+                            <small>Define el orden en que aparecerá en la tienda (1 al inicio, números mayores al final)</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
                             <label for="productCategory">Categoría</label>
                             <select id="productCategory" name="productCategory" required>
                                 <option value="">Seleccione una categoría</option>
@@ -100,19 +110,17 @@
                                 <option value="shampoos">Shampoos/Acondicionadores</option>
                             </select>
                         </div>
-                    </div>
 
-                    <div class="form-row">
                         <div class="form-group">
                             <label for="productPrice">Precio (Q)</label>
                             <input type="number" id="productPrice" name="productPrice" step="0.01" min="0" required>
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label for="productImage">URL de la Imagen</label>
-                            <input type="url" id="productImage" name="productImage" required>
-                            <small>Puede subir imagenes mediante un enlace directo</small>
-                        </div>
+                    <div class="form-group">
+                        <label for="productImage">URL de la Imagen</label>
+                        <input type="url" id="productImage" name="productImage" required>
+                        <small>Puede usar servicios como Imgur o subir a Firebase Storage</small>
                     </div>
 
                     <div class="form-group">

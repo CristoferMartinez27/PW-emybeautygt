@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Firebase</title>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #1e1e1e;
+            color: #d4d4d4;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #252526;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        h1 { color: #4ec9b0; }
+        .log { 
+            background: #1e1e1e;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #007acc;
+        }
+        .success { border-left-color: #4ec9b0; color: #4ec9b0; }
+        .error { border-left-color: #f48771; color: #f48771; }
+        .warning { border-left-color: #dcdcaa; color: #dcdcaa; }
+        pre {
+            background: #1e1e1e;
+            padding: 10px;
+            border-radius: 3px;
+            overflow-x: auto;
+        }
+        button {
+            background: #0e639c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #1177bb; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔥 Test de Conexión Firebase</h1>
+        
+        <button id="testConnection">1. Probar Conexión</button>
+        <button id="listCollections">2. Listar Colecciones</button>
+        <button id="listProducts">3. Listar Productos</button>
+        <button id="addTestProduct">4. Agregar Producto de Prueba</button>
+        
+        <div id="output"></div>
+    </div>
+
+    <script type="module">
+        import { db } from './js/firebase-config.js';
+        import { collection, getDocs, addDoc, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const output = document.getElementById('output');
+
+        function log(message, type = 'log') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.innerHTML = message;
+            output.appendChild(div);
+            console.log(message);
+        }
+
+        function clear() {
+            output.innerHTML = '';
+        }
+
+        // Test 1: Conexión básica
+        document.getElementById('testConnection').addEventListener('click', async () => {
+            clear();
+            log('🔍 Probando conexión a Firebase...', 'log');
+            
+            try {
+                if (db) {
+                    log('✅ Firestore inicializado correctamente', 'success');
+                    log(`📊 App: ${db.app.name}`, 'success');
+                } else {
+                    log('❌ Firestore NO está inicializado', 'error');
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+            }
+        });
+
+        // Test 2: Listar todas las colecciones (simulado)
+        document.getElementById('listCollections').addEventListener('click', async () => {
+            clear();
+            log('🔍 Intentando acceder a colecciones comunes...', 'log');
+            
+            const commonCollections = ['products', 'Products', 'productos', 'items', 'Items'];
+            
+            for (const collName of commonCollections) {
+                try {
+                    const collRef = collection(db, collName);
+                    const snapshot = await getDocs(collRef);
+                    
+                    if (snapshot.size > 0) {
+                        log(`✅ Colección "${collName}" encontrada con ${snapshot.size} documentos`, 'success');
+                    } else {
+                        log(`⚠️ Colección "${collName}" existe pero está vacía`, 'warning');
+                    }
+                } catch (error) {
+                    log(`❌ "${collName}": ${error.message}`, 'error');
+                }
+            }
+        });
+
+        // Test 3: Listar productos
+        document.getElementById('listProducts').addEventListener('click', async () => {
+            clear();
+            log('🔍 Listando productos de la colección "products"...', 'log');
+            
+            try {
+                const productsRef = collection(db, 'products');
+                const snapshot = await getDocs(productsRef);
+                
+                log(`📦 Total de productos: ${snapshot.size}`, snapshot.size > 0 ? 'success' : 'warning');
+                
+                if (snapshot.size > 0) {
+                    log('<h3>Productos encontrados:</h3>', 'log');
+                    snapshot.forEach((doc) => {
+                        const data = doc.data();
+                        log(`<pre>ID: ${doc.id}\n${JSON.stringify(data, null, 2)}</pre>`, 'success');
+                    });
+                } else {
+                    log('⚠️ La colección "products" está vacía. Usa el botón 4 para agregar un producto de prueba.', 'warning');
+                }
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`Stack: ${error.stack}`, 'error');
+            }
+        });
+
+        // Test 4: Agregar producto de prueba
+        document.getElementById('addTestProduct').addEventListener('click', async () => {
+            clear();
+            log('🔍 Agregando producto de prueba...', 'log');
+            
+            try {
+                const testProduct = {
+                    name: 'Producto de Prueba',
+                    order: 1,
+                    category: 'labiales',
+                    price: 39.99,
+                    image: 'https://via.placeholder.com/300x300?text=Producto+Prueba',
+                    description: 'Este es un producto de prueba creado automáticamente'
+                };
+                
+                const docRef = await addDoc(collection(db, 'products'), testProduct);
+                log(`✅ Producto creado con ID: ${docRef.id}`, 'success');
+                log(`<pre>${JSON.stringify(testProduct, null, 2)}</pre>`, 'success');
+                log('👉 Ahora recarga el panel admin para verlo', 'success');
+            } catch (error) {
+                log(`❌ Error: ${error.message}`, 'error');
+                log(`Stack: ${error.stack}`, 'error');
+            }
+        });
+
+        // Auto-ejecutar test de conexión
+        setTimeout(() => {
+            document.getElementById('testConnection').click();
+        }, 500);
+    </script>
+</body>
+</html>

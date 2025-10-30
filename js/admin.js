@@ -4,6 +4,9 @@ import { checkAuth, logout } from './auth.js';
 
 console.log('admin.js cargado correctamente');
 
+let products = []; // IMPORTANTE: Declarar la variable aquí al inicio
+let currentEditId = null;
+
 // Verificar autenticación de forma asíncrona
 (async () => {
     const isAuth = await checkAuth();
@@ -15,57 +18,162 @@ console.log('admin.js cargado correctamente');
         return;
     }
     
-    // Resto del código de admin.js...
+    // Inicializar admin después de verificar autenticación
     initializeAdmin();
 })();
 
 function initializeAdmin() {
-    let currentEditId = null;
-    let products = [];
-
+    console.log('Inicializando panel de administración...');
+    
+    // Logout button
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', () => {
             console.log('Cerrando sesión...');
             logout();
         });
-    }}
+    }
 
-const navItems = document.querySelectorAll('.nav-item');
-const sections = document.querySelectorAll('.admin-section');
+    // Navigation
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.admin-section');
 
-console.log('Nav items:', navItems.length, 'Secciones:', sections.length);
+    console.log('Nav items:', navItems.length, 'Secciones:', sections.length);
 
-navItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetSection = item.dataset.section;
-        console.log('Clic en sección:', targetSection);
-        
-        navItems.forEach(nav => nav.classList.remove('active'));
-        sections.forEach(section => section.classList.remove('active'));
-        
-        item.classList.add('active');
-        
-        // Mapeo directo
-        if (targetSection === 'products') {
-            document.getElementById('productsSection').classList.add('active');
-        } else if (targetSection === 'add-product') {
-            document.getElementById('addProductSection').classList.add('active');
-        }
-        
-        console.log('Sección activada');
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetSection = item.dataset.section;
+            console.log('Clic en sección:', targetSection);
+            
+            navItems.forEach(nav => nav.classList.remove('active'));
+            sections.forEach(section => section.classList.remove('active'));
+            
+            item.classList.add('active');
+            
+            if (targetSection === 'products') {
+                document.getElementById('productsSection').classList.add('active');
+            } else if (targetSection === 'add-product') {
+                document.getElementById('addProductSection').classList.add('active');
+            }
+        });
     });
-});
+
+    // Image preview
+    const productImageInput = document.getElementById('productImage');
+    if (productImageInput) {
+        productImageInput.addEventListener('input', (e) => {
+            const imageUrl = e.target.value;
+            if (imageUrl) {
+                document.getElementById('previewImg').src = imageUrl;
+                document.getElementById('imagePreview').style.display = 'block';
+            }
+        });
+    }
+
+    // Cancel button
+    const cancelBtn = document.getElementById('cancelBtn');
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', () => {
+            resetForm();
+        });
+    }
+
+    // Delete modal buttons
+    const confirmDeleteBtn = document.getElementById('confirmDelete');
+    const cancelDeleteBtn = document.getElementById('cancelDelete');
+    
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', async () => {
+            if (!currentEditId) return;
+            
+            try {
+                await deleteDoc(doc(db, 'products', currentEditId));
+                document.getElementById('deleteModal').classList.remove('active');
+                currentEditId = null;
+                await loadProducts();
+                showNotification('Producto eliminado', 'success');
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error al eliminar: ' + error.message, 'error');
+            }
+        });
+    }
+    
+    if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener('click', () => {
+            document.getElementById('deleteModal').classList.remove('active');
+            currentEditId = null;
+        });
+    }
+
+    // Product form submit
+    const productForm = document.getElementById('productForm');
+    if (productForm) {
+        productForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const productData = {
+                name: document.getElementById('productName').value.trim(),
+                order: parseInt(document.getElementById('productOrder').value) || 999,
+                category: document.getElementById('productCategory').value,
+                price: parseFloat(document.getElementById('productPrice').value),
+                image: document.getElementById('productImage').value.trim(),
+                description: document.getElementById('productDescription').value.trim()
+            };
+            
+            console.log('Guardando producto:', productData);
+            
+            try {
+                const productId = document.getElementById('productId').value;
+                
+                if (productId) {
+                    await updateDoc(doc(db, 'products', productId), productData);
+                    showNotification('Producto actualizado', 'success');
+                } else {
+                    const docRef = await addDoc(collection(db, 'products'), productData);
+                    console.log('Producto creado:', docRef.id);
+                    showNotification('Producto agregado', 'success');
+                }
+                
+                resetForm();
+                await loadProducts();
+                
+                // Volver a la lista de productos
+                navItems.forEach(nav => nav.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+                
+                navItems[0].classList.add('active');
+                document.getElementById('productsSection').classList.add('active');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                showNotification('Error: ' + error.message, 'error');
+            }
+        });
+    }
+
+    // Cargar productos al iniciar
+    loadProducts();
+}
 
 async function loadProducts() {
     console.log('Cargando productos...');
     try {
         const productsRef = collection(db, 'products');
-        const q = query(productsRef, orderBy('name'));
-        const querySnapshot = await getDocs(q);
         
-        products = [];
+        // Intentar primero con order, si falla usar sin ordenar
+        let querySnapshot;
+        try {
+            const q = query(productsRef, orderBy('order', 'asc'));
+            querySnapshot = await getDocs(q);
+            console.log('Productos ordenados por campo "order"');
+        } catch (orderError) {
+            console.log('Campo "order" no existe o sin índice, cargando sin ordenar...');
+            querySnapshot = await getDocs(productsRef);
+        }
+        
+        products = []; // Limpiar el array
         querySnapshot.forEach((doc) => {
             products.push({
                 id: doc.id,
@@ -73,12 +181,25 @@ async function loadProducts() {
             });
         });
         
+        // Ordenar manualmente por order si existe, sino por nombre
+        products.sort((a, b) => {
+            if (a.order !== undefined && b.order !== undefined) {
+                return a.order - b.order;
+            } else if (a.order !== undefined) {
+                return -1;
+            } else if (b.order !== undefined) {
+                return 1;
+            } else {
+                return a.name.localeCompare(b.name);
+            }
+        });
+        
         console.log('Productos cargados:', products.length);
         displayProductsTable(products);
     } catch (error) {
         console.error('Error al cargar productos:', error);
         document.getElementById('productsTableBody').innerHTML = `
-            <tr><td colspan="5" class="loading-row">Error: ${error.message}</td></tr>
+            <tr><td colspan="6" class="loading-row">Error: ${error.message}</td></tr>
         `;
     }
 }
@@ -86,15 +207,21 @@ async function loadProducts() {
 function displayProductsTable(productsArray) {
     const tbody = document.getElementById('productsTableBody');
     
+    if (!tbody) {
+        console.error('No se encontró el elemento productsTableBody');
+        return;
+    }
+    
     if (productsArray.length === 0) {
         tbody.innerHTML = `
-            <tr><td colspan="5" class="loading-row">No hay productos</td></tr>
+            <tr><td colspan="6" class="loading-row">No hay productos</td></tr>
         `;
         return;
     }
     
     tbody.innerHTML = productsArray.map(product => `
         <tr>
+            <td style="text-align: center; font-weight: 600; color: var(--color5);">${product.order || '999'}</td>
             <td class="product-img-cell">
                 <img src="${product.image}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/60?text=Sin+Imagen'">
             </td>
@@ -142,12 +269,16 @@ function attachActionListeners() {
 
 function editProduct(productId) {
     const product = products.find(p => p.id === productId);
-    if (!product) return;
+    if (!product) {
+        console.error('Producto no encontrado:', productId);
+        return;
+    }
     
     currentEditId = productId;
     
     document.getElementById('productId').value = productId;
     document.getElementById('productName').value = product.name;
+    document.getElementById('productOrder').value = product.order || 999;
     document.getElementById('productCategory').value = product.category;
     document.getElementById('productPrice').value = product.price;
     document.getElementById('productImage').value = product.image;
@@ -161,6 +292,9 @@ function editProduct(productId) {
     document.getElementById('imagePreview').style.display = 'block';
     
     // Cambiar a la sección de formulario
+    const navItems = document.querySelectorAll('.nav-item');
+    const sections = document.querySelectorAll('.admin-section');
+    
     navItems.forEach(nav => nav.classList.remove('active'));
     sections.forEach(section => section.classList.remove('active'));
     
@@ -173,87 +307,17 @@ function confirmDelete(productId) {
     document.getElementById('deleteModal').classList.add('active');
 }
 
-document.getElementById('confirmDelete').addEventListener('click', async () => {
-    if (!currentEditId) return;
-    
-    try {
-        await deleteDoc(doc(db, 'products', currentEditId));
-        document.getElementById('deleteModal').classList.remove('active');
-        currentEditId = null;
-        await loadProducts();
-        showNotification('Producto eliminado', 'success');
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error al eliminar: ' + error.message, 'error');
-    }
-});
-
-document.getElementById('cancelDelete').addEventListener('click', () => {
-    document.getElementById('deleteModal').classList.remove('active');
-    currentEditId = null;
-});
-
-document.getElementById('productImage').addEventListener('input', (e) => {
-    const imageUrl = e.target.value;
-    if (imageUrl) {
-        document.getElementById('previewImg').src = imageUrl;
-        document.getElementById('imagePreview').style.display = 'block';
-    }
-});
-
-document.getElementById('cancelBtn').addEventListener('click', () => {
-    resetForm();
-});
-
 function resetForm() {
-    document.getElementById('productForm').reset();
+    const form = document.getElementById('productForm');
+    if (form) {
+        form.reset();
+    }
     document.getElementById('productId').value = '';
     document.getElementById('imagePreview').style.display = 'none';
     document.getElementById('formTitle').textContent = 'Agregar Nuevo Producto';
     document.getElementById('submitBtn').textContent = 'Guardar Producto';
     currentEditId = null;
 }
-
-document.getElementById('productForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const productData = {
-        name: document.getElementById('productName').value.trim(),
-        category: document.getElementById('productCategory').value,
-        price: parseFloat(document.getElementById('productPrice').value),
-        image: document.getElementById('productImage').value.trim(),
-        description: document.getElementById('productDescription').value.trim()
-    };
-    
-    console.log('Guardando producto:', productData);
-    
-    try {
-        const productId = document.getElementById('productId').value;
-        
-        if (productId) {
-            await updateDoc(doc(db, 'products', productId), productData);
-            showNotification('Producto actualizado', 'success');
-        } else {
-            const docRef = await addDoc(collection(db, 'products'), productData);
-            console.log('Producto creado:', docRef.id);
-            showNotification('Producto agregado', 'success');
-        }
-        
-        resetForm();
-        await loadProducts();
-        
-        // Volver a la lista de productos
-        navItems.forEach(nav => nav.classList.remove('active'));
-        sections.forEach(section => section.classList.remove('active'));
-        
-        navItems[0].classList.add('active');
-        document.getElementById('productsSection').classList.add('active');
-        
-    } catch (error) {
-        console.error('Error:', error);
-        showNotification('Error: ' + error.message, 'error');
-    }
-});
 
 function showNotification(message, type) {
     const notification = document.createElement('div');
@@ -274,5 +338,3 @@ function showNotification(message, type) {
     
     setTimeout(() => notification.remove(), 3000);
 }
-
-loadProducts();
