@@ -3,9 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>EmyBeautyGT - Carrito</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/carrito.css">
@@ -60,7 +57,7 @@
                                 <input type="radio" name="shippingMethodSummary" value="contraentrega" checked>
                                 <div class="radio-content">
                                     <strong>Contraentrega - Cargo Express</strong>
-                                    <p>Q30.00 + 4% del total</p>
+                                    <p>Q30.00 + 4% sobre (subtotal + envío)</p>
                                 </div>
                             </label>
                             
@@ -259,7 +256,8 @@
             
             if (selectedShippingMethod === 'contraentrega') {
                 shippingCost = 30;
-                extraCharge = subtotal * 0.04;
+                // CORRECCIÓN: 4% sobre (subtotal + envío)
+                extraCharge = (subtotal + shippingCost) * 0.04;
                 document.getElementById('extraChargeRow').style.display = 'flex';
             } else {
                 shippingCost = 25;
@@ -314,7 +312,7 @@
             document.getElementById('totalCheckout').textContent = `Q ${total.toFixed(2)}`;
 
             const shippingMethodText = selectedShippingMethod === 'contraentrega' 
-                ? 'Contraentrega (Cargo Express) - Q30.00 + 4%' 
+                ? 'Contraentrega (Cargo Express) - Q30.00 + 4% sobre (subtotal + envío)' 
                 : 'Previo Depósito/Transferencia (Forza) - Q25.00';
             document.getElementById('shippingMethodText').textContent = shippingMethodText;
 
@@ -356,7 +354,7 @@
             message += `Envío: Q ${shippingCost.toFixed(2)}\n`;
             
             if (extraCharge > 0) {
-                message += `4%: Q ${extraCharge.toFixed(2)}\n`;
+                message += `4% sobre (Subtotal + Envío): Q ${extraCharge.toFixed(2)}\n`;
             }
             
             message += `Total: Q ${total.toFixed(2)}\n\n`;
